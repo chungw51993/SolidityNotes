@@ -74,4 +74,96 @@ nameReg.call.gas(1000000).value(1 ether)("register", "MyName");
   - ```string```: Dynamic UTF-8-encoded string
   - If you can limit the length to a certain bytes always use one of ```bytes1``` to ```bytes32``` because they are cheaper
 
+#### Functions
+  - _Internal_ and _External_ functions
+  - _Internal_ functions can only be called inside the current contract (current code block)
+  - _External_ functions consist of an address and a function signature and they can be called from external function calls
+```
+function (<parameter types>) {internal|external} [pure|constant|view|payable] [returns (<return types>)]
+```
+  - Parameter types can be empty but return types cannot be empty and if function should not return anything omit ```returns (<return types>)```
+  - By default function types are internal so ```internal``` can be omitted
+```
+// Example of using internal functions
+pragma solidity ^0.4.16;
+
+library ArrayUtils {
+  // internal functions can be used in internal library functions because
+  // they will be part of the same code context
+  function map(uint[] memory self, function (uint) pure returns (uint) f)
+    internal
+    pure
+    returns (uint[] memory r)
+  {
+    r = new uint[](self.length);
+    for (uint i = 0; i < self.length; i++) {
+      r[i] = f(self[i]);
+    }
+  }
+  function reduce(
+    uint[] memory self,
+    function (uint, uint) pure returns (uint) f
+  )
+    internal
+    pure
+    returns (uint r)
+  {
+    r = self[0];
+    for (uint i = 1; i < self.length; i++) {
+      r = f(r, self[i]);
+    }
+  }
+  function range(uint length) internal pure returns (uint[] memory r) {
+    r = new uint[](length);
+    for (uint i = 0; i < r.length; i++) {
+      r[i] = i;
+    }
+  }
+}
+
+contract Pyramid {
+  using ArrayUtils for *;
+  function pyramid(uint l) public pure returns (uint) {
+    return ArrayUtils.range(l).map(square).reduce(sum);
+  }
+  function square(uint x) internal pure returns (uint) {
+    return x * x;
+  }
+  function sum(uint x, uint y) internal pure returns (uint) {
+    return x + y;
+  }
+}
+```
+```
+// Example of using external functions
+pragma solidity ^0.4.11;
+
+contract Oracle {
+  struct Request {
+    bytes data;
+    function(bytes memory) external callback;
+  }
+  Request[] requests;
+  event NewRequest(uint);
+  function query(bytes data, function(bytes memory) external callback) public {
+    requests.push(Request(data, callback));
+    NewRequest(requests.length - 1);
+  }
+  function reply(uint requestID, bytes response) public {
+    // Here goes the check that the reply comes from a trusted source
+    requests[requestID].callback(response);
+  }
+}
+
+contract OracleUser {
+  Oracle constant oracle = Oracle(0x1234567); // known contract
+  function buySomething() {
+    oracle.query("USD", this.oracleResponse);
+  }
+  function oracleResponse(bytes response) public {
+    require(msg.sender == address(oracle));
+    // Use the data
+  }
+}
+```
 
