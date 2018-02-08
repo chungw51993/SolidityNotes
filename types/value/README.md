@@ -74,6 +74,37 @@ nameReg.call.gas(1000000).value(1 ether)("register", "MyName");
   - ```string```: Dynamic UTF-8-encoded string
   - If you can limit the length to a certain bytes always use one of ```bytes1``` to ```bytes32``` because they are cheaper
 
+#### Enums
+  - creates user-defined type
+  - They are explicitly convertible to and from all integer types but implicit conversion is not allowed
+  - Needs at least one member
+```
+pragma solidity ^0.4.16;
+
+contract test {
+    enum ActionChoices { GoLeft, GoRight, GoStraight, SitStill }
+    ActionChoices choice;
+    ActionChoices constant defaultChoice = ActionChoices.GoStraight;
+
+    function setGoStraight() public {
+        choice = ActionChoices.GoStraight;
+    }
+
+    // Since enum types are not part of the ABI, the signature of "getChoice"
+    // will automatically be changed to "getChoice() returns (uint8)"
+    // for all matters external to Solidity. The integer type used is just
+    // large enough to hold all enum values, i.e. if you have more values,
+    // `uint16` will be used and so on.
+    function getChoice() public view returns (ActionChoices) {
+        return choice;
+    }
+
+    function getDefaultChoice() public pure returns (uint) {
+        return uint(defaultChoice);
+    }
+}
+```
+
 #### Functions
   - _Internal_ and _External_ functions
   - _Internal_ functions can only be called inside the current contract (current code block)
