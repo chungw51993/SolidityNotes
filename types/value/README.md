@@ -166,4 +166,3 @@ contract OracleUser {
   }
 }
 ```
-
