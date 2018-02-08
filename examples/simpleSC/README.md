@@ -100,5 +100,3 @@ Coin.Sent().watch({}, '', function(error, result) {
 - The automatically generated functions, ```balances```, can be called from the user interface
 
 - The functions that will actually end up with the contract and can be called by users and contracts are ```mint``` and ```send```
-
-

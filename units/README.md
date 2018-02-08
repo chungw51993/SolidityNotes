@@ -48,6 +48,7 @@ function f(uint start, uint daysAfter) public {
     - ```ripemd160(...) returns (bytes32)```: compute RIPEMD-160 hash
     - ```ecrecover(bytes32 hash, uint8 v, bytes32 r, bytes32 s) returns (address)```: recover the address associated with the public key or return zero on error
     - All hash functions concatenates arguments without any paddings
+    - If padding is necessary you can use ```keccak256("\x00\x12")``` is the same as ```keccak256(uint16(0x12))```
 ```
 // These examples are all identical
 keccak256("ab", "c")
@@ -56,7 +57,6 @@ keccak256(0x616263)
 keccak256(6382179)
 keccak256(97, 98, 99)
 ```
-    - If padding is necessary you can use ```keccak256("\x00\x12")``` is the same as ```keccak256(uint16(0x12))```
   - Address Related
     - ```<address>.balance(uint256)```: balance of the address in Wei
     - ```<address>.transfer(uint256 amount)```: send given amount of Wei to address
