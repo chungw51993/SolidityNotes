@@ -74,6 +74,7 @@ contract MyFirstContract is Bank(10) {
 }
 ```
 
+- Interface is like constraint for the contract
 - MyFirstContract will have all the functions in Bank but it will not have access to it's variables
 - Only owner of the contract will be able to deposit or withdraw since modifier checks to see if sender is owner
 - Underscore in modifier is when the function modifier is applied to runs so you can run it before require if you wanted to
