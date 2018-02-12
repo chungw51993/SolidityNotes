@@ -8,5 +8,5 @@ As you will see, it is possible to create contracts for voting, crowdfunding, bl
 
 ### Resources
 
-[Ethereum Website](https://www.ethereum.org/token)
-[Solidity Docs](https://solidity.readthedocs.io/en/develop/index.html)
+- [Ethereum Website](https://www.ethereum.org/token)
+- [Solidity Docs](https://solidity.readthedocs.io/en/develop/index.html)

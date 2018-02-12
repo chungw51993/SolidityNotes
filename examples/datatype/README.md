@@ -64,6 +64,69 @@ contract DataTypes {
 }
 ```
 
+```
+pragma solidity ^0.4.0;
+
+library Strings {
+
+    function concat(string _base, string _value) internal returns (string) {
+        // Convert string into byte array
+        bytes memory _baseBytes = bytes(_base);
+        bytes memory _valueBytes = bytes(_value);
+
+        // Specify memory to not store values in the storage
+        string memory _tmpValue = new string(_baseBytes.length + _valueBytes.length);
+        bytes memory _newValue = bytes(_tmpValue);
+
+        uint i;
+        uint j;
+
+        // When you increment undefined uint value it will start from 0
+        for (i = 0; i < _baseBytes.length; i++) {
+            _newValue[j++] = _baseBytes[i];
+        }
+
+        for (i = 0; i < _valueBytes.length; i++) {
+            _newValue[j++] = _valueBytes[i];
+        }
+
+        return string(_newValue);
+    }
+
+    function strpos(string _base, string _value) internal returns (int) {
+        bytes memory _baseBytes = bytes(_base);
+        bytes memory _valueBytes = bytes(_value);
+
+        assert(_valueBytes.length == 1);
+
+        for (uint i = 0; i < _baseBytes.length; i++) {
+            if (_baseBytes[i] == _valueBytes[0]) {
+                return int(i);
+            }
+        }
+
+        return -1;
+    }
+}
+
+contract TestStrings {
+
+    // Extend the string functions with Strings library
+    using Strings for string;
+
+    function testConcat(string _base) returns (string) {
+        return _base.concat("_suffix");
+    }
+
+    function needleInHaystack(string _base) returns (int) {
+        return _base.strpos("t");
+    }
+
+}
+```
+
 - int8 to int256 in steps of 8
 - uint8 to uint256 in steps of 8
 - bytes1 to bytes32 in steps of 1
+- strings are arrays so convert it to bytes to manipulate it
+- you have to specify **memory**, **storage** or **stack** when converting
