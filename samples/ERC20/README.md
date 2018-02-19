@@ -65,6 +65,7 @@ contract MyFirstToken is ERC20 {
         if (_value > 0 && _value <= balanceOf(msg.sender)) {
             __balanceOf[msg.sender] -= _value;
             __balanceOf[_to] += _value;
+            Transfer(msg.sender, _to, _value);
             return true;
         }
 
@@ -86,6 +87,7 @@ contract MyFirstToken is ERC20 {
 
     function approve(address _spender, uint _value) returns (bool success) {
         __allowances[msg.sender][_spender] = _value;
+        Approval(msg.sender, _spender, _value);
         return true;
     }
 
