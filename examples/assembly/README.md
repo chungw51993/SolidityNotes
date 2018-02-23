@@ -95,5 +95,6 @@ Instructional Assembly
   }
 ```
 
+- The instructional assembly is the same loop as asmLoops in the functional assembly
 - Don't use inline assembly when you don't have to
 - Use functional assembly since it is easier to understand
