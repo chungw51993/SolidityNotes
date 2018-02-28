@@ -142,3 +142,5 @@ contract AlarmTrigger is AlarmWakeUp {
 
 }
 ```
+
+- Use time based event when you have to use event
