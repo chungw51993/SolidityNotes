@@ -20,6 +20,7 @@ contract Inbox {
   - Transaction takes time to execute
   - Returns the transaction hash
   - It costs money to send transaction
+  - Transaction will NEVER return data only hash
 - If the funciton is not modifying any data it will just call the function
   - It executes instantly
   - Returns contract data
